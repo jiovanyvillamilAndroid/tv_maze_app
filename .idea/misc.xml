@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/drawable/bottom_rounded_image.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/drawable/ic_image_placeholder.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/layout/activity_main.xml" value="0.28637627432808155" />
         <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/layout/activity_show_detail.xml" value="0.3625" />
+        <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/layout/episodes_item.xml" value="0.3625" />
+        <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/layout/season_item.xml" value="0.3625" />
         <entry key="..\:/Users/jiova/Documents/projects/tv_maze_app/app/src/main/res/layout/show_item.xml" value="0.39593908629441626" />
       </map>
     </option>

@@ -18,12 +18,12 @@
 
         <ImageView
             android:id="@+id/imageShow"
-            android:transitionName="imageShow"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
+            android:transitionName="imageShow"
             tools:ignore="ContentDescription"
-            android:src="@drawable/ic_launcher_background" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
     </com.google.android.material.card.MaterialCardView>
 
 

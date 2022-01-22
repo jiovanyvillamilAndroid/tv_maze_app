@@ -1,23 +1,21 @@
-package com.crisvillamil.tvmazeapp.view
+package com.crisvillamil.tvmazeapp.view.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
 import com.crisvillamil.tvmazeapp.OnItemSelected
 import com.crisvillamil.tvmazeapp.databinding.ShowItemBinding
 import com.crisvillamil.tvmazeapp.model.Show
-import com.squareup.picasso.Picasso
+import com.crisvillamil.tvmazeapp.view.bindOrHide
+import com.crisvillamil.tvmazeapp.view.loadImageFromURL
 
 
 class ShowViewHolder(private val showItemBinding: ShowItemBinding) :
     RecyclerView.ViewHolder(showItemBinding.root) {
 
     fun bindShow(show: Show, onItemSelected: OnItemSelected) {
-        showItemBinding.showTitle.text = show.name
-        if (show.genres.isNotEmpty()) showItemBinding.genres.text = show.genres.toString()
-        showItemBinding.language.text = show.language
-        Picasso
-            .get()
-            .load(show.image.original)
-            .into(showItemBinding.imageShow)
+        showItemBinding.showTitle.bindOrHide(show.name)
+        showItemBinding.genres.bindOrHide(show.genres.toString())
+        showItemBinding.language.bindOrHide(show.language)
+        showItemBinding.imageShow.loadImageFromURL(show.image?.original)
         showItemBinding.root.setOnClickListener {
             onItemSelected.onItemSelected(show, showItemBinding.imageShow)
         }

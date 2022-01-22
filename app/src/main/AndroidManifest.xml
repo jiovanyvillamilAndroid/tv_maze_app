@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVMazeApp">
         <activity
-            android:name=".ShowDetailActivity"
+            android:name=".view.ShowDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

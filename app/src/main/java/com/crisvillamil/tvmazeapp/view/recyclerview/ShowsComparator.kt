@@ -1,4 +1,4 @@
-package com.crisvillamil.tvmazeapp.view
+package com.crisvillamil.tvmazeapp.view.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
 import com.crisvillamil.tvmazeapp.model.Show

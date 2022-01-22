@@ -1,4 +1,4 @@
-package com.crisvillamil.tvmazeapp.view
+package com.crisvillamil.tvmazeapp.view.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
