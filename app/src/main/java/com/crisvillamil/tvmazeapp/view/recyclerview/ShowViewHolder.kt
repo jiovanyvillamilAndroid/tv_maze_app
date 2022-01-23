@@ -11,9 +11,9 @@ import com.crisvillamil.tvmazeapp.view.loadImageFromURL
 class ShowViewHolder(private val showItemBinding: ShowItemBinding) :
     RecyclerView.ViewHolder(showItemBinding.root) {
 
-    fun bindShow(show: Show, onItemSelected: OnItemSelected) {
+    fun bindShow(show: Show, onItemSelected: OnItemSelected<Show>) {
         showItemBinding.showTitle.bindOrHide(show.name)
-        showItemBinding.genres.bindOrHide(show.genres.toString())
+        showItemBinding.genres.bindOrHide(show.genres.orEmpty().toString())
         showItemBinding.language.bindOrHide(show.language)
         showItemBinding.imageShow.loadImageFromURL(show.image?.original)
         showItemBinding.root.setOnClickListener {

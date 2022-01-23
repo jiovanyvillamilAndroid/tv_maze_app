@@ -28,10 +28,10 @@
         android:id="@+id/episodeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/imageContainer"
         app:layout_constraintStart_toStartOf="@id/imageContainer"
         app:layout_constraintTop_toBottomOf="@id/imageContainer"
         tools:text="1. Pilot" />

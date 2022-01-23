@@ -44,45 +44,108 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@color/text_black"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/shadowSpace"
             tools:text="Kirby Buckets" />
 
         <TextView
+            android:id="@+id/premierDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Premier Date"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/showName"
+            app:layout_constraintTop_toBottomOf="@id/showName" />
+
+        <TextView
             android:id="@+id/premierDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/showName"
-            app:layout_constraintTop_toBottomOf="@id/showName" />
+            app:layout_constraintStart_toStartOf="@id/premierDateTitle"
+            app:layout_constraintTop_toBottomOf="@id/premierDateTitle" />
+
+        <TextView
+            android:id="@+id/finishedDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Finished Date"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/premierDate"
+            app:layout_constraintTop_toBottomOf="@id/premierDate" />
 
         <TextView
             android:id="@+id/finishedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/premierDate"
-            app:layout_constraintTop_toBottomOf="@id/premierDate" />
+            app:layout_constraintStart_toStartOf="@id/finishedDateTitle"
+            app:layout_constraintTop_toBottomOf="@id/finishedDateTitle" />
+
+        <TextView
+            android:id="@+id/genresTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Genres"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/finishedDate"
+            app:layout_constraintTop_toBottomOf="@id/finishedDate" />
 
         <TextView
             android:id="@+id/genres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/finishedDate"
-            app:layout_constraintTop_toBottomOf="@id/finishedDate" />
+            app:layout_constraintStart_toStartOf="@id/genresTitle"
+            app:layout_constraintTop_toBottomOf="@id/genresTitle" />
+
+        <TextView
+            android:id="@+id/summaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Summary"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/genres"
+            app:layout_constraintTop_toBottomOf="@id/genres" />
 
         <TextView
             android:id="@+id/summary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/summaryTitle"
+            app:layout_constraintTop_toBottomOf="@id/summaryTitle" />
+
+        <TextView
+            android:id="@+id/seasonTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/genres"
-            app:layout_constraintTop_toBottomOf="@id/genres" />
+            android:layout_marginStart="4dp"
+            android:text="Available Seasons"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/summary"
+            app:layout_constraintTop_toBottomOf="@id/summary" />
+
+        <ProgressBar
+            android:id="@+id/loader"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/seasonTitle"
+            app:layout_constraintStart_toEndOf="@id/seasonTitle"
+            app:layout_constraintTop_toTopOf="@id/seasonTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/seasonsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/summary"
+            app:layout_constraintTop_toBottomOf="@id/seasonTitle"
             tools:listitem="@layout/season_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

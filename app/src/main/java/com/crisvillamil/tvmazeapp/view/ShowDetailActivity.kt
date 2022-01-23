@@ -1,19 +1,16 @@
 package com.crisvillamil.tvmazeapp.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.crisvillamil.tvmazeapp.R
 import com.crisvillamil.tvmazeapp.databinding.ActivityShowDetailBinding
-import com.crisvillamil.tvmazeapp.model.EpisodeResponse
-import com.crisvillamil.tvmazeapp.model.SeasonResponse
 import com.crisvillamil.tvmazeapp.model.Show
 import com.crisvillamil.tvmazeapp.view.MainActivity.Companion.SHOW_ITEM_KEY
 import com.crisvillamil.tvmazeapp.view.recyclerview.SeasonsAdapter
@@ -21,7 +18,6 @@ import com.crisvillamil.tvmazeapp.viewmodel.ShowDetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
-import java.lang.Exception
 
 class ShowDetailActivity : AppCompatActivity() {
     private lateinit var showDetailBinding: ActivityShowDetailBinding
@@ -43,10 +39,7 @@ class ShowDetailActivity : AppCompatActivity() {
     }
 
     private fun initSeasonsFetch(showId: Int) {
-
-        val jobs = arrayListOf<Job>()
         viewModel.viewModelScope.launch(Dispatchers.Main) {
-            //ShowLoading
             val seasons = viewModel.getSeasons(showId)
             if (seasons != null) {
                 val subItems = seasons.map {
@@ -55,9 +48,13 @@ class ShowDetailActivity : AppCompatActivity() {
                 val itemsMap = subItems.map {
                     it.first to it.second
                 }.toMap()
+                showDetailBinding.loader.visibility = View.GONE
                 showDetailBinding.seasonsRecyclerView.adapter =
                     SeasonsAdapter(seasons, itemsMap)
+                Toast.makeText(this@ShowDetailActivity, "Seasons Loaded!", Toast.LENGTH_SHORT)
+                    .show()
             } else {
+                showDetailBinding.loader.visibility = View.GONE
                 Toast.makeText(
                     this@ShowDetailActivity,
                     "Can't retrieve seasons info",
@@ -96,8 +93,9 @@ class ShowDetailActivity : AppCompatActivity() {
         showDetailBinding.genres.bindOrHide(show.genres.toString())
         showDetailBinding.premierDate.bindOrHide(show.premiered)
         showDetailBinding.finishedDate.bindOrHide(show.ended)
-        showDetailBinding.summary.text =
-            HtmlCompat.fromHtml(show.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        if (show.summary != null)
+            showDetailBinding.summary.text =
+                HtmlCompat.fromHtml(show.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     private fun bindImage(show: Show) {
@@ -138,7 +136,6 @@ fun ImageView.loadImageFromURL(url: String?) {
     Picasso
         .get()
         .load(url)
-        //.placeholder(R.drawable.ic_image_placeholder)
         .error(R.drawable.ic_image_error)
         .into(this)
 }

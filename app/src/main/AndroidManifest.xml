@@ -12,11 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVMazeApp">
         <activity
+            android:name=".view.EpisodeDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ShowDetailActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
