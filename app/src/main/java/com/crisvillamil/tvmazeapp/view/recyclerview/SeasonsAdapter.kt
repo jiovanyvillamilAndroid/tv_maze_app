@@ -13,7 +13,7 @@ class SeasonsAdapter(
 ) :
     RecyclerView.Adapter<SeasonViewHolder>() {
 
-    val viewPool = RecyclerView.RecycledViewPool()
+    private val viewPool = RecyclerView.RecycledViewPool()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeasonViewHolder {
         val itemBinding =

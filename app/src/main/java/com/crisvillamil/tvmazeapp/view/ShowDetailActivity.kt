@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.crisvillamil.tvmazeapp.R
@@ -30,27 +31,19 @@ class ShowDetailActivity : AppCompatActivity() {
         val showData = getShowData()
         showData?.let {
             bindShowInfo(showData)
-            initSeasonsFetch(showData.id)
+            viewModel.viewModelScope.launch {
+                viewModel.getSeasons(showData.id)
+            }
         }
+        initSeasonsObserver()
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(ShowDetailViewModel::class.java)
-    }
-
-    private fun initSeasonsFetch(showId: Int) {
-        viewModel.viewModelScope.launch(Dispatchers.Main) {
-            val seasons = viewModel.getSeasons(showId)
-            if (seasons != null) {
-                val subItems = seasons.map {
-                    async { it.id to viewModel.getEpisodes(it.id) }
-                }.awaitAll()
-                val itemsMap = subItems.map {
-                    it.first to it.second
-                }.toMap()
-                showDetailBinding.loader.visibility = View.GONE
+    private fun initSeasonsObserver() {
+        viewModel.itemsMapLiveData.observe(this, Observer { data ->
+            showDetailBinding.loader.visibility = View.GONE
+            if (!data.first.isNullOrEmpty()) {
                 showDetailBinding.seasonsRecyclerView.adapter =
-                    SeasonsAdapter(seasons, itemsMap)
+                    SeasonsAdapter(data.first, data.second)
                 Toast.makeText(this@ShowDetailActivity, "Seasons Loaded!", Toast.LENGTH_SHORT)
                     .show()
             } else {
@@ -61,7 +54,11 @@ class ShowDetailActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        }
+        })
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(ShowDetailViewModel::class.java)
     }
 
     private fun getShowData(): Show? {

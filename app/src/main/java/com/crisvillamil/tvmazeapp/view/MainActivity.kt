@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.HORIZONTAL
 import com.crisvillamil.tvmazeapp.OnItemSelected
+import com.crisvillamil.tvmazeapp.R
 import com.crisvillamil.tvmazeapp.databinding.ActivityMainBinding
 import com.crisvillamil.tvmazeapp.model.Show
 import com.crisvillamil.tvmazeapp.view.recyclerview.ShowsAdapter
@@ -68,9 +69,10 @@ class MainActivity : AppCompatActivity() {
                     errString: CharSequence
                 ) {
                     super.onAuthenticationError(errorCode, errString)
+                    val errorMessage = getString(R.string.authentication_error_message, errString)
                     Toast.makeText(
                         applicationContext,
-                        "Authentication error: $errString", Toast.LENGTH_SHORT
+                        errorMessage, Toast.LENGTH_SHORT
                     )
                         .show()
                 }
@@ -84,8 +86,9 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
+                    val errorMessage = getString(R.string.authentication_failed)
                     Toast.makeText(
-                        applicationContext, "Authentication failed",
+                        applicationContext, errorMessage,
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -94,8 +97,8 @@ class MainActivity : AppCompatActivity() {
 
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login required for see the shows")
-            .setSubtitle("Log in using your biometric credential")
+            .setTitle(resources.getString(R.string.biometric_title))
+            .setSubtitle(resources.getString(R.string.biometric_message))
             .setDeviceCredentialAllowed(true)
             .build()
 
