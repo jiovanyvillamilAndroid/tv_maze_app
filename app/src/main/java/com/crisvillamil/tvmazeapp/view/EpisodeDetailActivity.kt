@@ -1,7 +1,7 @@
 package com.crisvillamil.tvmazeapp.view
 
+import android.app.AlertDialog
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.crisvillamil.tvmazeapp.R
@@ -24,7 +24,12 @@ class EpisodeDetailActivity : AppCompatActivity() {
     private fun bindTexts(episodeResponse: EpisodeResponse?) {
         episodeResponse?.let { episode ->
             bindEpisodeName(episode)
-            episodeDetailBinding.seasonTitle.bindOrHide("Season ${episode.season}")
+            episodeDetailBinding.seasonTitle.bindOrHide(
+                resources.getString(
+                    R.string.seasons_name,
+                    episode.season
+                )
+            )
             if (episode.summary != null)
                 episodeDetailBinding.summary.text =
                     HtmlCompat.fromHtml(episode.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -69,9 +74,21 @@ class EpisodeDetailActivity : AppCompatActivity() {
         } catch (exception: Exception) {
             exception.printStackTrace()
             supportStartPostponedEnterTransition()
-            Toast.makeText(this, "Can't get info for that episode", Toast.LENGTH_LONG).show()
-            //TODO: Hide views and show Error View
+            showErrorDialog()
             null
         }
+    }
+
+    private fun showErrorDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.error_text)
+            .setMessage(R.string.fail_detail_episode)
+            .setPositiveButton(
+                android.R.string.ok
+            ) { _, _ ->
+                this.finish()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 }

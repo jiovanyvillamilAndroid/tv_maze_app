@@ -1,5 +1,6 @@
 package com.crisvillamil.tvmazeapp.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -7,11 +8,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.crisvillamil.tvmazeapp.R
 import com.crisvillamil.tvmazeapp.databinding.ActivityShowDetailBinding
+import com.crisvillamil.tvmazeapp.model.EpisodeResponse
+import com.crisvillamil.tvmazeapp.model.SeasonResponse
 import com.crisvillamil.tvmazeapp.model.Show
 import com.crisvillamil.tvmazeapp.view.MainActivity.Companion.SHOW_ITEM_KEY
 import com.crisvillamil.tvmazeapp.view.recyclerview.SeasonsAdapter
@@ -19,6 +21,7 @@ import com.crisvillamil.tvmazeapp.viewmodel.ShowDetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
+
 
 class ShowDetailActivity : AppCompatActivity() {
     private lateinit var showDetailBinding: ActivityShowDetailBinding
@@ -28,6 +31,11 @@ class ShowDetailActivity : AppCompatActivity() {
         initViewModel()
         initViewBinding()
         supportPostponeEnterTransition()
+        bindData()
+        initSeasonsObserver()
+    }
+
+    private fun bindData() {
         val showData = getShowData()
         showData?.let {
             bindShowInfo(showData)
@@ -35,26 +43,49 @@ class ShowDetailActivity : AppCompatActivity() {
                 viewModel.getSeasons(showData.id)
             }
         }
-        initSeasonsObserver()
     }
 
     private fun initSeasonsObserver() {
-        viewModel.itemsMapLiveData.observe(this, Observer { data ->
+        viewModel.itemsMapLiveData.observe(this, { data ->
             showDetailBinding.loader.visibility = View.GONE
             if (!data.first.isNullOrEmpty()) {
-                showDetailBinding.seasonsRecyclerView.adapter =
-                    SeasonsAdapter(data.first, data.second)
-                Toast.makeText(this@ShowDetailActivity, "Seasons Loaded!", Toast.LENGTH_SHORT)
-                    .show()
+                onSeasonsSuccess(data)
             } else {
-                showDetailBinding.loader.visibility = View.GONE
-                Toast.makeText(
-                    this@ShowDetailActivity,
-                    "Can't retrieve seasons info",
-                    Toast.LENGTH_LONG
-                ).show()
+                onSeasonFailed()
             }
         })
+    }
+
+    private fun onSeasonFailed() {
+        Toast.makeText(
+            this@ShowDetailActivity,
+            resources.getString(R.string.seasons_retrieve_error),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun onSeasonsSuccess(data: Pair<List<SeasonResponse>, Map<Int, List<EpisodeResponse>?>>) {
+        showDetailBinding.seasonsRecyclerView.adapter =
+            SeasonsAdapter(data.first, data.second)
+        Toast.makeText(
+            this@ShowDetailActivity,
+            resources.getString(R.string.seasons_loaded),
+            Toast.LENGTH_SHORT
+        )
+            .show()
+    }
+
+    private fun showErrorDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.error_text)
+            .setMessage(R.string.fail_detail_show)
+            .setPositiveButton(
+                android.R.string.ok
+            ) { _, _ ->
+                this.finish()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     private fun initViewModel() {
@@ -67,8 +98,7 @@ class ShowDetailActivity : AppCompatActivity() {
         } catch (exception: Exception) {
             exception.printStackTrace()
             supportStartPostponedEnterTransition()
-            Toast.makeText(this, "Can't get info for that show", Toast.LENGTH_LONG).show()
-            //TODO: Hide views and show Error View
+            showErrorDialog()
             null
         }
     }

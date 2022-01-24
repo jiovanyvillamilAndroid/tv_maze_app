@@ -12,4 +12,9 @@
     <string name="finished_date">Finished Date</string>
     <string name="genres_title">Genres</string>
     <string name="available_seasons">Available Seasons</string>
+    <string name="seasons_loaded">Seasons Loaded!</string>
+    <string name="seasons_retrieve_error">Can\'t retrieve seasons info</string>
+    <string name="error_text">Error</string>
+    <string name="fail_detail_show">Can\'t get info for that show</string>
+    <string name="fail_detail_episode">Can\'t get info for that episode</string>
 </resources>

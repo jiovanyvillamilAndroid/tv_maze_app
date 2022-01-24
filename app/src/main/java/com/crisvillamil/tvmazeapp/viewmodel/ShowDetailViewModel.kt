@@ -26,7 +26,9 @@ class ShowDetailViewModel : ViewModel() {
                 val itemsMap = subItems.map {
                     it.first to it.second
                 }.toMap()
-                itemsMapMutableLiveData.value = seasons to itemsMap
+                withContext(Dispatchers.Main) {
+                    itemsMapMutableLiveData.value = seasons to itemsMap
+                }
             }
         }
     }
