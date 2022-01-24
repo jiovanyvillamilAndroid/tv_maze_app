@@ -8,12 +8,18 @@ data class Show(
     val id: Int,
     val name: String,
     val language: String,
-    val genres: List<String>,
+    val genres: List<String>?,
     val image: ImageResponse?,
     val ended: String?,
     val premiered: String,
-    val summary: String
+    val summary: String?
 ) : Parcelable
+
+
+data class ShowFindResponse(
+    val score : Double,
+    val show: Show
+)
 
 @Parcelize
 data class ImageResponse(

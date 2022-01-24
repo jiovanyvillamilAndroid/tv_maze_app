@@ -25,7 +25,5 @@ class ShowsPagingSource(private val TVMazeAPI: TVMazeAPI) : PagingSource<Int, Sh
             exception.printStackTrace()
             LoadResult.Error(exception)
         }
-
-
     }
 }

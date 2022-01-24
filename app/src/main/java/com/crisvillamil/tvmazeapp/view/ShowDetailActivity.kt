@@ -1,12 +1,12 @@
 package com.crisvillamil.tvmazeapp.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ import com.crisvillamil.tvmazeapp.viewmodel.ShowDetailViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.*
-import java.lang.Exception
+
 
 class ShowDetailActivity : AppCompatActivity() {
     private lateinit var showDetailBinding: ActivityShowDetailBinding
@@ -31,40 +31,65 @@ class ShowDetailActivity : AppCompatActivity() {
         initViewModel()
         initViewBinding()
         supportPostponeEnterTransition()
+        bindData()
+        initSeasonsObserver()
+    }
+
+    private fun bindData() {
         val showData = getShowData()
         showData?.let {
             bindShowInfo(showData)
-            initSeasonsFetch(showData.id)
+            viewModel.viewModelScope.launch {
+                viewModel.getSeasons(showData.id)
+            }
         }
+    }
+
+    private fun initSeasonsObserver() {
+        viewModel.itemsMapLiveData.observe(this, { data ->
+            showDetailBinding.loader.visibility = View.GONE
+            if (!data.first.isNullOrEmpty()) {
+                onSeasonsSuccess(data)
+            } else {
+                onSeasonFailed()
+            }
+        })
+    }
+
+    private fun onSeasonFailed() {
+        Toast.makeText(
+            this@ShowDetailActivity,
+            resources.getString(R.string.seasons_retrieve_error),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun onSeasonsSuccess(data: Pair<List<SeasonResponse>, Map<Int, List<EpisodeResponse>?>>) {
+        showDetailBinding.seasonsRecyclerView.adapter =
+            SeasonsAdapter(data.first, data.second)
+        Toast.makeText(
+            this@ShowDetailActivity,
+            resources.getString(R.string.seasons_loaded),
+            Toast.LENGTH_SHORT
+        )
+            .show()
+    }
+
+    private fun showErrorDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.error_text)
+            .setMessage(R.string.fail_detail_show)
+            .setPositiveButton(
+                android.R.string.ok
+            ) { _, _ ->
+                this.finish()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(ShowDetailViewModel::class.java)
-    }
-
-    private fun initSeasonsFetch(showId: Int) {
-
-        val jobs = arrayListOf<Job>()
-        viewModel.viewModelScope.launch(Dispatchers.Main) {
-            //ShowLoading
-            val seasons = viewModel.getSeasons(showId)
-            if (seasons != null) {
-                val subItems = seasons.map {
-                    async { it.id to viewModel.getEpisodes(it.id) }
-                }.awaitAll()
-                val itemsMap = subItems.map {
-                    it.first to it.second
-                }.toMap()
-                showDetailBinding.seasonsRecyclerView.adapter =
-                    SeasonsAdapter(seasons, itemsMap)
-            } else {
-                Toast.makeText(
-                    this@ShowDetailActivity,
-                    "Can't retrieve seasons info",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
     }
 
     private fun getShowData(): Show? {
@@ -73,8 +98,7 @@ class ShowDetailActivity : AppCompatActivity() {
         } catch (exception: Exception) {
             exception.printStackTrace()
             supportStartPostponedEnterTransition()
-            Toast.makeText(this, "Can't get info for that show", Toast.LENGTH_LONG).show()
-            //TODO: Hide views and show Error View
+            showErrorDialog()
             null
         }
     }
@@ -96,8 +120,9 @@ class ShowDetailActivity : AppCompatActivity() {
         showDetailBinding.genres.bindOrHide(show.genres.toString())
         showDetailBinding.premierDate.bindOrHide(show.premiered)
         showDetailBinding.finishedDate.bindOrHide(show.ended)
-        showDetailBinding.summary.text =
-            HtmlCompat.fromHtml(show.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        if (show.summary != null)
+            showDetailBinding.summary.text =
+                HtmlCompat.fromHtml(show.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     private fun bindImage(show: Show) {
@@ -138,7 +163,6 @@ fun ImageView.loadImageFromURL(url: String?) {
     Picasso
         .get()
         .load(url)
-        //.placeholder(R.drawable.ic_image_placeholder)
         .error(R.drawable.ic_image_error)
         .into(this)
 }

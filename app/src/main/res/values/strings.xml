@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">TVMazeApp</string>
     <string name="seasons_name">Season %1$d</string>
+    <string name="authentication_error_message">Authentication error: %1$s"</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="biometric_title">Biometric login required for see the shows</string>
+    <string name="biometric_message">Log in using your biometric credential</string>
+    <string name="search_hint">Search any tv show…</string>
+    <string name="shows_title_text">SHOWS</string>
+    <string name="summary_title_text">Summary</string>
+    <string name="premier_date">Premier Date</string>
+    <string name="finished_date">Finished Date</string>
+    <string name="genres_title">Genres</string>
+    <string name="available_seasons">Available Seasons</string>
+    <string name="seasons_loaded">Seasons Loaded!</string>
+    <string name="seasons_retrieve_error">Can\'t retrieve seasons info</string>
+    <string name="error_text">Error</string>
+    <string name="fail_detail_show">Can\'t get info for that show</string>
+    <string name="fail_detail_episode">Can\'t get info for that episode</string>
 </resources>
