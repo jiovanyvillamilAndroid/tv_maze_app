@@ -1,7 +1,7 @@
 package com.crisvillamil.tvmazeapp.view.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
-import com.crisvillamil.tvmazeapp.OnItemSelected
+import com.crisvillamil.tvmazeapp.view.OnItemSelected
 import com.crisvillamil.tvmazeapp.databinding.ShowItemBinding
 import com.crisvillamil.tvmazeapp.model.Show
 import com.crisvillamil.tvmazeapp.view.bindOrHide

@@ -1,5 +1,6 @@
 package com.crisvillamil.tvmazeapp.view
 
+import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,13 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.HORIZONTAL
-import com.crisvillamil.tvmazeapp.OnItemSelected
 import com.crisvillamil.tvmazeapp.R
 import com.crisvillamil.tvmazeapp.databinding.ActivityMainBinding
 import com.crisvillamil.tvmazeapp.model.Show
@@ -72,9 +73,12 @@ class MainActivity : AppCompatActivity() {
                     val errorMessage = getString(R.string.authentication_error_message, errString)
                     Toast.makeText(
                         applicationContext,
-                        errorMessage, Toast.LENGTH_SHORT
+                        errorMessage, Toast.LENGTH_LONG
                     )
                         .show()
+                    if (errorCode == ERROR_NO_DEVICE_CREDENTIAL) {
+                        launchScreenLock()
+                    }
                 }
 
                 override fun onAuthenticationSucceeded(
@@ -105,6 +109,12 @@ class MainActivity : AppCompatActivity() {
         biometricPrompt.authenticate(promptInfo)
     }
 
+    private fun launchScreenLock() {
+        val intent = Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD)
+        startActivity(intent)
+        finish()
+    }
+
     private fun onAuthenticationSuccess() {
         initShowsPagingAdapter()
         initRecyclerView()
@@ -115,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSearchObserver() {
-        mainActivityBinding.searchInput.doOnTextChanged { text, start, before, count ->
+        mainActivityBinding.searchInput.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrBlank()) {
                 viewModel.fetchShows()
                 hideKeyBoard()

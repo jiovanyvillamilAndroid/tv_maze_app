@@ -3,7 +3,7 @@ package com.crisvillamil.tvmazeapp.view.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import com.crisvillamil.tvmazeapp.OnItemSelected
+import com.crisvillamil.tvmazeapp.view.OnItemSelected
 import com.crisvillamil.tvmazeapp.databinding.ShowItemBinding
 import com.crisvillamil.tvmazeapp.model.Show
 

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.crisvillamil.tvmazeapp.OnItemSelected
+import com.crisvillamil.tvmazeapp.view.OnItemSelected
 import com.crisvillamil.tvmazeapp.R
 import com.crisvillamil.tvmazeapp.databinding.SeasonItemBinding
 import com.crisvillamil.tvmazeapp.model.EpisodeResponse

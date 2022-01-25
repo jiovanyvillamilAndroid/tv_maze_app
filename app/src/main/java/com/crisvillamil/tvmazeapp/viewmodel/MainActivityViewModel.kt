@@ -8,7 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.crisvillamil.tvmazeapp.ShowsPagingSource
+import com.crisvillamil.tvmazeapp.view.recyclerview.ShowsPagingSource
 import com.crisvillamil.tvmazeapp.model.Show
 import com.crisvillamil.tvmazeapp.network.TVMazeAPIProvider
 import kotlinx.coroutines.flow.Flow
