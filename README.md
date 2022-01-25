@@ -18,4 +18,4 @@ This app is created in 3 Activities because we doesn't have an horizontal naviga
 - Picasso
 - ViewModel(Jetpack)
 ## Video
-![](tv_maze_gif.gif)
+![](tv_maze_app_gif.gif)
